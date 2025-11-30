@@ -1,12 +1,19 @@
 <?php
-require_once "models/Producto.php";
+namespace Controllers;
+
+use Models\Producto;
+use Core\View;
 
 class CatalogoController {
 
     public function index() {
         $model = new Producto();
         $productos = $model->obtenerTodos();
-        require "views/catalogo/index.php";
+
+        View::load("catalogo/index", [
+            "productos" => $productos
+        ]);
     }
 }
+
 

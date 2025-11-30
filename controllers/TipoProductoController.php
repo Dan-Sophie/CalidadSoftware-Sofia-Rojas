@@ -1,42 +1,92 @@
 <?php
-require_once "models/TipoProducto.php";
+namespace Controllers;
+
+use Models\TipoProducto;
+use Core\View;
 
 class TipoProductoController {
 
+    /* ----------------------------------
+       LISTAR
+    ---------------------------------- */
     public function index() {
         $model = new TipoProducto();
         $tipos = $model->obtenerTodos();
-        require "views/tipos/index.php";
+
+        View::load("tipos/index", [
+            "tipos" => $tipos
+        ]);
     }
 
+    /* ----------------------------------
+       FORMULARIO CREAR
+    ---------------------------------- */
     public function crear() {
-        require "views/tipos/crear.php";
+        View::load("tipos/crear");
     }
 
+    /* ----------------------------------
+       GUARDAR NUEVO REGISTRO
+    ---------------------------------- */
     public function guardar() {
         $model = new TipoProducto();
         $model->guardar($_POST);
+
         header("Location: index.php?view=tipos");
+        exit;
     }
 
+    /* ----------------------------------
+       EDITAR
+    ---------------------------------- */
     public function editar() {
+        $id = $_GET['id'] ?? null;
+
+        if (!$id) {
+            header("Location: index.php?view=tipos");
+            exit;
+        }
+
         $model = new TipoProducto();
-        $tipo = $model->buscar($_GET['id']);
-        require "views/tipos/editar.php";
+        $tipo = $model->buscar($id);
+
+        if (!$tipo) {
+            header("Location: index.php?view=tipos");
+            exit;
+        }
+
+        View::load("tipos/editar", [
+            "tipo" => $tipo
+        ]);
     }
 
+    /* ----------------------------------
+       ACTUALIZAR
+    ---------------------------------- */
     public function actualizar() {
         $model = new TipoProducto();
         $model->actualizar($_POST);
+
         header("Location: index.php?view=tipos");
+        exit;
     }
 
+    /* ----------------------------------
+       ELIMINAR
+    ---------------------------------- */
     public function eliminar() {
-        $model = new TipoProducto();
-        $model->eliminar($_GET['id']);
+        $id = $_GET['id'] ?? null;
+
+        if ($id) {
+            $model = new TipoProducto();
+            $model->eliminar($id);
+        }
+
         header("Location: index.php?view=tipos");
+        exit;
     }
 }
+
 
 
 

@@ -1,4 +1,9 @@
 <?php
+
+namespace Controllers;
+use Core\View;
+
+
 class AuthController {
 
     public function login() {

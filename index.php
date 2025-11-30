@@ -4,112 +4,119 @@ ini_set("display_errors", 1);
 
 session_start();
 
+/* -----------------------------
+   AUTOLOAD CASERO (PHP PURO)
+------------------------------ */
+spl_autoload_register(function($class) {
+    // Convierte namespaces a rutas
+    $class = str_replace("\\", "/", $class);
+    $path = __DIR__ . "/" . $class . ".php";
+
+    if (file_exists($path)) {
+        require_once $path;
+    }
+});
+
+/* -----------------------------
+   IMPORTAR CONTROLADORES
+------------------------------ */
+use Controllers\AuthController;
+use Controllers\TipoProductoController;
+use Controllers\ProductosController;
+use Controllers\CatalogoController;
+
+/* -----------------------------
+   RUTEO
+------------------------------ */
 $view = $_GET['view'] ?? 'principal';
 
-
-switch($view) {
+switch ($view) {
 
     /* LOGIN */
     case 'login':
-        require_once "controllers/AuthController.php";
         (new AuthController())->login();
         break;
 
     case 'login_validar':
-        require_once "controllers/AuthController.php";
         (new AuthController())->validar();
         break;
 
     case 'logout':
-        require_once "controllers/AuthController.php";
         (new AuthController())->logout();
         break;
-        
+
     case 'dashboard':
-        require_once "controllers/AuthController.php";
         (new AuthController())->dashboard();
         break;
 
 
-    /* TIPOS DE PRODUCTOS */
+    /* TIPOS */
     case 'tipos':
-        require_once "controllers/TipoProductoController.php";
         (new TipoProductoController())->index();
         break;
-    
+
     case 'tipo_crear':
-        require_once "controllers/TipoProductoController.php";
         (new TipoProductoController())->crear();
         break;
-    
+
     case 'tipo_guardar':
-        require_once "controllers/TipoProductoController.php";
         (new TipoProductoController())->guardar();
         break;
-    
+
     case 'tipo_editar':
-        require_once "controllers/TipoProductoController.php";
         (new TipoProductoController())->editar();
         break;
-    
+
     case 'tipo_actualizar':
-        require_once "controllers/TipoProductoController.php";
         (new TipoProductoController())->actualizar();
         break;
-    
+
     case 'tipo_eliminar':
-        require_once "controllers/TipoProductoController.php";
         (new TipoProductoController())->eliminar();
         break;
 
 
-        /* PRODUCTOS */
+    /* PRODUCTOS */
     case 'productos':
-        require_once "controllers/ProductosController.php";
         (new ProductosController())->index();
-        break;    
+        break;
 
     case 'producto_crear':
-        require_once "controllers/ProductosController.php";
         (new ProductosController())->crear();
         break;
 
     case 'producto_guardar':
-        require_once "controllers/ProductosController.php";
         (new ProductosController())->guardar();
         break;
 
     case 'producto_editar':
-        require_once "controllers/ProductosController.php";
         (new ProductosController())->editar();
         break;
 
     case 'producto_actualizar':
-        require_once "controllers/ProductosController.php";
         (new ProductosController())->actualizar();
         break;
 
     case 'producto_eliminar':
-        require_once "controllers/ProductosController.php";
         (new ProductosController())->eliminar();
         break;
 
 
-
     /* CATÁLOGO */
     case 'catalogo':
-        require_once "controllers/CatalogoController.php";
         (new CatalogoController())->index();
         break;
-    
+
+    /* PRINCIPAL SIN CONTROLADOR */
     case 'principal':
-        require_once "views/principal/index.php";
+        require "views/principal/index.php";
         break;
-        
+
     default:
         header("Location: index.php?view=login");
         break;
 }
+
 
 
 

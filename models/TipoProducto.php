@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../config/conexion.php';
+namespace Models;
+
+use Config\Conexion;
 
 class TipoProducto {
 
@@ -18,6 +20,7 @@ class TipoProducto {
     public function buscar($id) {
         $db = Conexion::conectar();
         $id = (int)$id;
+
         $sql = $db->query("SELECT * FROM tipos_de_productos WHERE id = $id");
         return $sql->fetch_assoc();
     }
@@ -27,14 +30,21 @@ class TipoProducto {
         $id = (int)$data['id'];
         $nombre = $db->real_escape_string($data['nombre']);
 
-        $db->query("UPDATE tipos_de_productos SET nombre='$nombre' WHERE id=$id");
+        $db->query("
+            UPDATE tipos_de_productos
+            SET nombre = '$nombre'
+            WHERE id = $id
+        ");
     }
 
     public function eliminar($id) {
         $db = Conexion::conectar();
         $id = (int)$id;
-        $db->query("DELETE FROM tipos_de_producto WHERE id=$id");
+
+        // ❗ Aquí estaba el error: la tabla estaba mal escrita
+        $db->query("DELETE FROM tipos_de_productos WHERE id = $id");
     }
 }
+
 
 

@@ -1,8 +1,13 @@
 <?php
-require_once __DIR__ . '/../config/conexion.php';
+namespace Models;
+
+use Config\Conexion;
 
 class Producto {
 
+    /* ----------------------------------
+       OBTENER TODOS
+    ---------------------------------- */
     public function obtenerTodos() {
         $db = Conexion::conectar();
 
@@ -31,10 +36,13 @@ class Producto {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    /* ----------------------------------
+       OBTENER UNO POR CÓDIGO
+    ---------------------------------- */
     public function obtenerPorCodigo($codigo) {
         $db = Conexion::conectar();
         $codigo = $db->real_escape_string($codigo);
-    
+
         $sql = $db->query("
             SELECT 
                 p.codigo,
@@ -57,18 +65,21 @@ class Producto {
             WHERE p.codigo = '$codigo'
             LIMIT 1
         ");
-    
-        return $sql->fetch_assoc();
-    }    
 
+        return $sql->fetch_assoc();
+    }
+
+    /* ----------------------------------
+       GUARDAR NUEVO
+    ---------------------------------- */
     public function guardar($data) {
         $db = Conexion::conectar();
 
-        $codigo = $db->real_escape_string($data['codigo']);
-        $nombre = $db->real_escape_string($data['nombre']);
-        $descripcion = $db->real_escape_string($data['descripcion']);
-        $precio = (int)$data['precio'];
-        $tipo = (int)$data['tipo_producto_id'];
+        $codigo       = $db->real_escape_string($data['codigo']);
+        $nombre       = $db->real_escape_string($data['nombre']);
+        $descripcion  = $db->real_escape_string($data['descripcion']);
+        $precio       = (int)$data['precio'];
+        $tipo         = (int)$data['tipo_producto_id'];
 
         $db->query("
             INSERT INTO productos(codigo, nombre, descripcion, precio, tipo_producto_id)
@@ -76,22 +87,28 @@ class Producto {
         ");
     }
 
+    /* ----------------------------------
+       BUSCAR
+    ---------------------------------- */
     public function buscar($codigo) {
         $db = Conexion::conectar();
         $codigo = $db->real_escape_string($codigo);
 
-        $sql = $db->query("SELECT * FROM productos WHERE codigo = '$codigo'");
-        return $sql->fetch_assoc();
+        $query = $db->query("SELECT * FROM productos WHERE codigo = '$codigo'");
+        return $query->fetch_assoc();
     }
 
+    /* ----------------------------------
+       ACTUALIZAR
+    ---------------------------------- */
     public function actualizar($data) {
         $db = Conexion::conectar();
 
-        $codigo = $db->real_escape_string($data['codigo']);
-        $nombre = $db->real_escape_string($data['nombre']);
-        $descripcion = $db->real_escape_string($data['descripcion']);
-        $precio = (int)$data['precio'];
-        $tipo = (int)$data['tipo_producto_id'];
+        $codigo       = $db->real_escape_string($data['codigo']);
+        $nombre       = $db->real_escape_string($data['nombre']);
+        $descripcion  = $db->real_escape_string($data['descripcion']);
+        $precio       = (int)$data['precio'];
+        $tipo         = (int)$data['tipo_producto_id'];
 
         $db->query("
             UPDATE productos
@@ -103,6 +120,9 @@ class Producto {
         ");
     }
 
+    /* ----------------------------------
+       ELIMINAR
+    ---------------------------------- */
     public function eliminar($codigo) {
         $db = Conexion::conectar();
         $codigo = $db->real_escape_string($codigo);
@@ -110,6 +130,7 @@ class Producto {
         $db->query("DELETE FROM productos WHERE codigo='$codigo'");
     }
 }
+
 
 
 

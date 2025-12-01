@@ -6,8 +6,10 @@ use Core\View;
 
 class TipoProductoController {
 
+    private const REDIRECT_TIPOS = "Location: index.php?view=tipos";
+
     /* ----------------------------------
-       LISTAR
+       LISTADO
     ---------------------------------- */
     public function index() {
         $model = new TipoProducto();
@@ -19,20 +21,20 @@ class TipoProductoController {
     }
 
     /* ----------------------------------
-       FORMULARIO CREAR
+       CREAR
     ---------------------------------- */
     public function crear() {
         View::load("tipos/crear");
     }
 
     /* ----------------------------------
-       GUARDAR NUEVO REGISTRO
+       GUARDAR
     ---------------------------------- */
     public function guardar() {
         $model = new TipoProducto();
         $model->guardar($_POST);
 
-        header("Location: index.php?view=tipos");
+        header(self::REDIRECT_TIPOS);
         exit;
     }
 
@@ -43,7 +45,7 @@ class TipoProductoController {
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
-            header("Location: index.php?view=tipos");
+            header(self::REDIRECT_TIPOS);
             exit;
         }
 
@@ -51,7 +53,7 @@ class TipoProductoController {
         $tipo = $model->buscar($id);
 
         if (!$tipo) {
-            header("Location: index.php?view=tipos");
+            header(self::REDIRECT_TIPOS);
             exit;
         }
 
@@ -67,7 +69,7 @@ class TipoProductoController {
         $model = new TipoProducto();
         $model->actualizar($_POST);
 
-        header("Location: index.php?view=tipos");
+        header(self::REDIRECT_TIPOS);
         exit;
     }
 
@@ -82,10 +84,11 @@ class TipoProductoController {
             $model->eliminar($id);
         }
 
-        header("Location: index.php?view=tipos");
+        header(self::REDIRECT_TIPOS);
         exit;
     }
 }
+
 
 
 

@@ -1,4 +1,6 @@
 <?php
+namespace Config;
+
 // Cargar variables de entorno
 function loadEnv($path) {
     if (!file_exists($path)) return;
@@ -16,13 +18,12 @@ function loadEnv($path) {
     }
 }
 
-// Carga config.env desde la raíz del proyecto
 loadEnv(__DIR__ . '/../config.env');
 
 class Conexion {
 
     public static function conectar() {
-        $db = new mysqli(
+        $db = new \mysqli(
             $_ENV['DB_HOST'],
             $_ENV['DB_USER'],
             $_ENV['DB_PASS'],
@@ -36,4 +37,5 @@ class Conexion {
         return $db;
     }
 }
+
 

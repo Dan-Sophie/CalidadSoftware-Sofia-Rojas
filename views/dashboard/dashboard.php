@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard | Monarch</title>
+    <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Iconos -->
@@ -23,27 +23,32 @@
     </style>
 </head>
 
-<body class="bg-black text-white">
 
-<!-- NAV -->
-<nav class="bg-[#121212] border-b border-purple-800 px-6 py-4 flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-purple-400">Panel Administrativo </h1>
+<body class="bg-black text-white min-h-screen flex flex-col">
 
-    <div class="flex items-center gap-6">
+<!-- HEADER -->
+<header class="bg-gradient-to-r from-purple-400 to-purple-600 shadow-lg py-6">
+    <div class="container mx-auto flex justify-between items-center px-6">
 
-        <a href="#" class="text-gray-300 hover:text-purple-400 transition flex items-center gap-2">
-            <i class="fa-solid fa-user"></i>
-            Mi cuenta
+        <a href="index.php?view=dashboard"
+           class="text-2xl font-bold text-white hover:text-purple-200 transition">
+           Panel Administrativo
         </a>
 
-        <a href="index.php?view=logout"
-           class="text-red-400 hover:text-red-500 transition flex items-center gap-2 font-semibold">
-           <i class="fa-solid fa-right-from-bracket"></i>
-           Cerrar sesión
-        </a>
+        <div class="flex gap-4">
+            <a href="index.php?view=cuenta"
+               class="flex items-center gap-2 bg-black/70 px-4 py-2 rounded-lg border border-white hover:bg-gray-800 transition">
+               <i class="fa-solid fa-user"></i> Mi cuenta
+            </a>
+
+            <a href="index.php?view=logout"
+               class="flex items-center gap-2 bg-black/70 px-4 py-2 rounded-lg border border-white hover:bg-gray-800 transition">
+               <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+            </a>
+        </div>
 
     </div>
-</nav>
+</header>
 
 <!-- CONTENIDO -->
 <div class="container mx-auto p-8">

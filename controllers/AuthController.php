@@ -1,13 +1,14 @@
 <?php
 
 namespace Controllers;
-use Core\View;
 
+use Models\Producto;
+use Models\TipoProducto;
 
 class AuthController {
 
     public function login() {
-        require_once "views/login/login.php";
+        require "views/login/login.php";
     }
 
     public function validar() {
@@ -20,7 +21,6 @@ class AuthController {
             exit;
         }
 
-        // usuario normal → va al catálogo
         header("Location: index.php?view=catalogo");
         exit;
     }
@@ -37,18 +37,17 @@ class AuthController {
             exit;
         }
 
-        require_once "models/Producto.php";
-        require_once "models/TipoProducto.php";
-
+        // Gracias al autoload ya no se necesitan require
         $productoModel = new Producto();
         $tipoModel = new TipoProducto();
 
         $productos = $productoModel->obtenerTodos();
         $tipos = $tipoModel->obtenerTodos();
 
-        require_once "views/dashboard/dashboard.php";
+        require "views/dashboard/dashboard.php";
     }
 }
+
 
 
 

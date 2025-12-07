@@ -1,127 +1,71 @@
 <?php
-namespace Models;
+namespace Controllers;
 
-use config\conexion;
+use Models\Producto;
+use Models\TipoProducto;
 
-require_once __DIR__ . '/../config/conexion.php';
+class ProductosController {
 
-class Producto {
+    public function index() {
+        $productoModel = new Producto();
+        $productos = $productoModel->obtenerTodos();
 
-    /* ----------------------------------
-       SELECT base para reutilizar
-    ---------------------------------- */
-    private function baseSelect() {
-        return "
-            SELECT 
-                p.codigo,
-                p.nombre,
-                p.descripcion,
-                p.precio,
-                p.tipo_producto_id,
-                p.color,
-                p.talla,
-                p.material,
-                p.estilo,
-                p.genero,
-                p.cantidad_stock,
-                p.proveedor,
-                p.fecha_ingreso,
-                t.nombre AS tipo_nombre
-            FROM productos p
-            INNER JOIN tipos_de_productos t
-                ON p.tipo_producto_id = t.id
-        ";
+        require "views/productos/index.php";
     }
 
-    /* ----------------------------------
-       OBTENER TODOS
-    ---------------------------------- */
-    public function obtenerTodos() {
-        $db = Conexion::conectar();
+    public function crear() {
+        $tipoModel = new TipoProducto();
+        $tipos = $tipoModel->obtenerTodos();
 
-        $sql = $this->baseSelect();
-        $result = $db->query($sql);
-
-        return $result->fetch_all(MYSQLI_ASSOC);
+        require "views/productos/crear.php";
     }
 
-    /* ----------------------------------
-       OBTENER POR CÓDIGO
-    ---------------------------------- */
-    public function obtenerPorCodigo($codigo) {
-        $db = Conexion::conectar();
-        $codigo = $db->real_escape_string($codigo);
+    public function guardar() {
+        $productoModel = new Producto();
+        $productoModel->guardar($_POST);
 
-        $sql = $this->baseSelect() . "
-            WHERE p.codigo = '$codigo'
-            LIMIT 1
-        ";
-
-        $result = $db->query($sql);
-        return $result->fetch_assoc();
+        header("Location: index.php?view=productos");
+        exit;
     }
 
-    /* ----------------------------------
-       GUARDAR
-    ---------------------------------- */
-    public function guardar($data) {
-        $db = Conexion::conectar();
+    public function editar() {
+        if (!isset($_GET['codigo'])) {
+            header("Location: index.php?view=productos");
+            exit;
+        }
 
-        $codigo = $db->real_escape_string($data['codigo']);
-        $nombre = $db->real_escape_string($data['nombre']);
-        $descripcion = $db->real_escape_string($data['descripcion']);
-        $precio = (int)$data['precio'];
-        $tipo = (int)$data['tipo_producto_id'];
+        $productoModel = new Producto();
+        $tipoModel = new TipoProducto();
 
-        $db->query("
-            INSERT INTO productos(codigo, nombre, descripcion, precio, tipo_producto_id)
-            VALUES ('$codigo', '$nombre', '$descripcion', $precio, $tipo)
-        ");
+        $producto = $productoModel->obtenerPorCodigo($_GET['codigo']);
+        $tipos = $tipoModel->obtenerTodos();
+
+        require "views/productos/editar.php";
     }
 
-    /* ----------------------------------
-       BUSCAR (simple)
-    ---------------------------------- */
-    public function buscar($codigo) {
-        $db = Conexion::conectar();
-        $codigo = $db->real_escape_string($codigo);
+    public function actualizar() {
+        $productoModel = new Producto();
+        $productoModel->actualizar($_POST);
 
-        $sql = $db->query("SELECT * FROM productos WHERE codigo = '$codigo'");
-        return $sql->fetch_assoc();
+        header("Location: index.php?view=productos");
+        exit;
     }
 
-    /* ----------------------------------
-       ACTUALIZAR
-    ---------------------------------- */
-    public function actualizar($data) {
-        $db = Conexion::conectar();
+    public function eliminar() {
+        if (!isset($_GET['codigo'])) {
+            header("Location: index.php?view=productos");
+            exit;
+        }
 
-        $codigo = $db->real_escape_string($data['codigo']);
-        $nombre = $db->real_escape_string($data['nombre']);
-        $descripcion = $db->real_escape_string($data['descripcion']);
-        $precio = (int)$data['precio'];
-        $tipo = (int)$data['tipo_producto_id'];
+        $productoModel = new Producto();
+        $productoModel->eliminar($_GET['codigo']);
 
-        $db->query("
-            UPDATE productos
-            SET nombre='$nombre',
-                descripcion='$descripcion',
-                precio=$precio,
-                tipo_producto_id=$tipo
-            WHERE codigo='$codigo'
-        ");
-    }
-
-    /* ----------------------------------
-       ELIMINAR
-    ---------------------------------- */
-    public function eliminar($codigo) {
-        $db = Conexion::conectar();
-        $codigo = $db->real_escape_string($codigo);
-
-        $db->query("DELETE FROM productos WHERE codigo='$codigo'");
+        header("Location: index.php?view=productos");
+        exit;
     }
 }
+
+
 
 
 

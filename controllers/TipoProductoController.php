@@ -31,6 +31,11 @@ class TipoProductoController {
        GUARDAR
     ---------------------------------- */
     public function guardar() {
+        if (empty($_POST)) {
+            header(self::REDIRECT_TIPOS);
+            exit;
+        }
+
         $model = new TipoProducto();
         $model->guardar($_POST);
 
@@ -44,7 +49,7 @@ class TipoProductoController {
     public function editar() {
         $id = $_GET['id'] ?? null;
 
-        if (!$id) {
+        if (!$id || !is_numeric($id)) {
             header(self::REDIRECT_TIPOS);
             exit;
         }
@@ -66,6 +71,11 @@ class TipoProductoController {
        ACTUALIZAR
     ---------------------------------- */
     public function actualizar() {
+        if (empty($_POST) || !isset($_POST['id']) || !is_numeric($_POST['id'])) {
+            header(self::REDIRECT_TIPOS);
+            exit;
+        }
+
         $model = new TipoProducto();
         $model->actualizar($_POST);
 
@@ -79,7 +89,7 @@ class TipoProductoController {
     public function eliminar() {
         $id = $_GET['id'] ?? null;
 
-        if ($id) {
+        if ($id && is_numeric($id)) {
             $model = new TipoProducto();
             $model->eliminar($id);
         }
@@ -88,6 +98,7 @@ class TipoProductoController {
         exit;
     }
 }
+
 
 
 

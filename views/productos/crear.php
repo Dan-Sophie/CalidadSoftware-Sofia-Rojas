@@ -5,7 +5,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Crear Producto | Monarch</title>
+    <title>Crear Producto</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
